@@ -2,10 +2,12 @@ const express = require('express');
 const app = express();
 const port = process.env.PORT || 3000;
 
+app.use(express.json()); // Enabling JSON Parasing
+
 const courses =[
     {id: 1, name:'course1'},
-    {id: 2, name:'course1'},
-    {id: 3, name:'course1'},
+    {id: 2, name:'course2'},
+    {id: 3, name:'course3'},
 ];
 
 app.get('/',(req,res)=>{
@@ -21,6 +23,15 @@ app.get('/api/courses/:id',(req,res)=>{
     if(!course) // 404 Object Not Found
         res.status(404).send('The course with the given ID not found');
     res.send(course) 
+});
+
+app.post('/api/courses',(req,res)=>{
+    const course ={
+        id: courses.length + 1,
+        name: req.body.name
+    };
+    courses.push(course); // Pushing course object into courses
+    res.send(course);
 });
 
 /*  Query Parameter if we can make http://localhost:3000/api/posts/25/45%20?%20sortBy=name
