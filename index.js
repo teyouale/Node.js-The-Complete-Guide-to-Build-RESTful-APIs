@@ -1,5 +1,6 @@
 const express = require('express');
 const Joi = require('joi');
+const logger = require('./logger');
 const app = express();
 
 const port = process.env.PORT || 3000;
@@ -7,10 +8,7 @@ const port = process.env.PORT || 3000;
 app.use(express.json()); // Enabling JSON Parasing
 
 // Creating Custom MiddleWare
-app.use(function(req, res, next) {
-  console.log('Logging');
-  next(); ////--> if we didn't use Next Function it Didn't Exceture Other Middlewares
-});
+app.use(logger);
 
 app.use(function(req, res, next) {
   console.log('Authenticating');
