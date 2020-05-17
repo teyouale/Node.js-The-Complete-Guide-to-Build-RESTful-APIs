@@ -6,6 +6,17 @@ const port = process.env.PORT || 3000;
 
 app.use(express.json()); // Enabling JSON Parasing
 
+// Creating Custom MiddleWare
+app.use(function(req, res, next) {
+  console.log('Logging');
+  next(); ////--> if we didn't use Next Function it Didn't Exceture Other Middlewares
+});
+
+app.use(function(req, res, next) {
+  console.log('Authenticating');
+  next(); ////--> if we didn't use Next Function it Didn't Exceture Other Middlewares
+});
+
 const courses = [
   { id: 1, name: 'course1' },
   { id: 2, name: 'course2' },
