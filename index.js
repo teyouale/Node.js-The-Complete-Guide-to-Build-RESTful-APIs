@@ -29,14 +29,10 @@ app.get("/api/courses/:id", (req, res) => {
 });
 
 app.post("/api/courses", (req, res) => {
-  const schema = {
-    name: Joi.string()
-      .min(3)
-      .required()
-  };
-  const result = Joi.validate(req.body, schema);
-  if (result.error) {
-    res.status(400).send(result.error.details[0].message);
+  const { error } = validateCourse(req.body);
+  if (error) {
+    res.status(400).send(error.details[0].message);
+    return;
   }
   const course = {
     id: courses.length + 1,
@@ -45,11 +41,40 @@ app.post("/api/courses", (req, res) => {
   courses.push(course); // Pushing course object into courses
   res.send(course);
 });
+app.put("/api/courses/:id", (req, res) => {
+  //Look Up the Course
+  // if not existing ,return 404
+  const course = courses.find(c => c.id === parseInt(req.params.id));
+  if (!course)
+    // 404 Object Not Found
+    res.status(404).send("The course with the given ID not found");
+
+  // Validate
+  //If inValid,return 400 - Bad request
+  const { error } = validateCourse(req.body);
+  if (error) {
+    res.status(400).send(error.details[0].message);
+    return;
+  }
+  //Update Course
+  //Return the Update Course
+  course.name = req.body.name;
+  res.send(course);
+});
 
 /*  Query Parameter if we can make http://localhost:3000/api/posts/25/45%20?%20sortBy=name
     app.get('/api/posts/:year/:month',(req,res)=>{
          res.send(req.query);
     });
  */
+
+function validateCourse(course) {
+  const schema = {
+    name: Joi.string()
+      .min(3)
+      .required()
+  };
+  return Joi.validate(course, schema);
+}
 
 app.listen(port, () => console.log(`Listening On Port ${port}...`));
