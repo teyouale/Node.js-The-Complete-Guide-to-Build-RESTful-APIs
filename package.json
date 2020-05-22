@@ -1,7 +1,6 @@
 {
   "name": "node.jsthe-complete-guide-to-build-restfull_api",
   "version": "1.0.0",
-  "description": "",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -10,6 +9,9 @@
   "license": "ISC",
   "dependencies": {
     "express": "^4.17.1",
-    "nodemon": "^2.0.2"
-  }
+    "nodemon": "^2.0.2",
+    "mongoose": "5.9.15"
+  },
+  "devDependencies": {},
+  "description": ""
 }
